@@ -25,20 +25,30 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (ctx, userSnapshot) {
-            if (userSnapshot.connectionState == ConnectionState.waiting) {
-              return Scaffold(body: Center(child: CircularProgressIndicator()));
-            }
-            if (userSnapshot.hasData) {
-              return ChatsScreen();
-            }
-            return LoginScreen();
-          },
-        ),
+        home: AuthWrapper(),
         routes: AppRoutes.getRoutes(context),
       ),
+    );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (ctx, userSnapshot) {
+        if (userSnapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
+        }
+        if (userSnapshot.hasData) {
+          print("User is signed in: ${userSnapshot.data?.email}");
+          return ChatsScreen();
+        }
+        print("User is signed out");
+        return LoginScreen();
+      },
     );
   }
 }

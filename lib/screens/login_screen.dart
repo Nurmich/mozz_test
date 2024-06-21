@@ -14,19 +14,19 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.message,
                 size: 100,
-                color: Colors.blue,
+                color: Colors.greenAccent,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               AuthForm(isLogin: true),
             ],
           ),
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
           onTap: () {
             Navigator.of(context)
@@ -40,7 +40,10 @@ class LoginScreen extends StatelessWidget {
                 "Don't have an account?",
                 style: TextStyle(),
               ),
-              Text(' Register'),
+              Text(
+                ' Register',
+                style: TextStyle(color: Colors.green),
+              ),
             ],
           ),
         ),

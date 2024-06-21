@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../providers/chat_provider.dart';
 import '../widgets/chat_item.dart';
 
 class ChatsScreen extends StatelessWidget {
@@ -9,24 +8,43 @@ class ChatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final chatProvider = Provider.of<ChatProvider>(context);
-    final chats = chatProvider.chats;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Чаты'),
+        title: const Text('Чаты'),
         actions: [
           IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              Navigator.of(context).pushReplacementNamed('/login');
             },
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: chats.length,
-        itemBuilder: (ctx, i) => ChatItem(chats[i]),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('chats').snapshots(),
+        builder: (ctx, chatSnapshot) {
+          if (chatSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final chatDocs = chatSnapshot.data?.docs;
+          return ListView.builder(
+            itemCount: chatDocs?.length ?? 0,
+            itemBuilder: (ctx, index) {
+              var chat = chatDocs?[index];
+              var participants = List<String>.from(chat?['participants'] ?? []);
+              var chatTitle = participants.firstWhere(
+                  (email) => email != FirebaseAuth.instance.currentUser?.email,
+                  orElse: () => 'Unknown');
+              return ListTile(
+                title: Text(chatTitle),
+                onTap: () {
+                  // Navigate to chat screen
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }

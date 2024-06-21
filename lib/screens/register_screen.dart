@@ -14,19 +14,19 @@ class RegisterScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.person_add,
                 size: 100,
-                color: Colors.blue,
+                color: Colors.greenAccent,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               AuthForm(isLogin: false),
             ],
           ),
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
           onTap: () {
             Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
@@ -39,7 +39,10 @@ class RegisterScreen extends StatelessWidget {
                 "Already have an account?",
                 style: TextStyle(),
               ),
-              Text(' Login'),
+              Text(
+                ' Login',
+                style: TextStyle(color: Colors.green),
+              ),
             ],
           ),
         ),

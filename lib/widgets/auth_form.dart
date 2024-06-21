@@ -5,7 +5,7 @@ import '../screens/chats_screen.dart';
 class AuthForm extends StatefulWidget {
   final bool isLogin;
 
-  AuthForm({required this.isLogin});
+  const AuthForm({required this.isLogin});
 
   @override
   _AuthFormState createState() => _AuthFormState();
@@ -26,7 +26,7 @@ class _AuthFormState extends State<AuthForm> {
         _passwordController.text != _confirmPasswordController.text) {
       // Show error message if passwords don't match
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Passwords do not match!')),
+        const SnackBar(content: Text('Passwords do not match!')),
       );
       return;
     }
@@ -49,7 +49,7 @@ class _AuthFormState extends State<AuthForm> {
       Navigator.of(context).pushReplacementNamed(ChatsScreen.routeName);
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Authentication failed!')),
+        const SnackBar(content: Text('Authentication failed!')),
       );
     }
 
@@ -64,6 +64,9 @@ class _AuthFormState extends State<AuthForm> {
       key: _formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center, // Center the form elements
+        crossAxisAlignment:
+            CrossAxisAlignment.center, // Center the form elements
         children: [
           TextFormField(
             controller: _emailController,
@@ -73,6 +76,7 @@ class _AuthFormState extends State<AuthForm> {
               fillColor: Colors.grey[200],
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide.none,
               ),
             ),
             keyboardType: TextInputType.emailAddress,
@@ -83,7 +87,7 @@ class _AuthFormState extends State<AuthForm> {
               return null;
             },
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           TextFormField(
             controller: _passwordController,
             decoration: InputDecoration(
@@ -92,6 +96,7 @@ class _AuthFormState extends State<AuthForm> {
               fillColor: Colors.grey[200],
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide.none,
               ),
             ),
             obscureText: true,
@@ -102,7 +107,7 @@ class _AuthFormState extends State<AuthForm> {
               return null;
             },
           ),
-          if (!widget.isLogin) SizedBox(height: 10),
+          if (!widget.isLogin) const SizedBox(height: 10),
           if (!widget.isLogin)
             TextFormField(
               controller: _confirmPasswordController,
@@ -112,6 +117,7 @@ class _AuthFormState extends State<AuthForm> {
                 fillColor: Colors.grey[200],
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide.none,
                 ),
               ),
               obscureText: true,
@@ -122,23 +128,24 @@ class _AuthFormState extends State<AuthForm> {
                 return null;
               },
             ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           if (_isLoading)
-            CircularProgressIndicator()
+            const CircularProgressIndicator()
           else
             SizedBox(
               width: double.infinity, // Make the button take the full width
               child: ElevatedButton(
-                child: Text(widget.isLogin ? 'Login' : 'Register'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.black, // Text color
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                  textStyle: TextStyle(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                  textStyle: const TextStyle(
                     fontSize: 18,
                   ),
                 ),
                 onPressed: _submit,
+                child: Text(widget.isLogin ? 'Login' : 'Register'),
               ),
             ),
         ],
